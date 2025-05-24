@@ -1,0 +1,40 @@
+export const announcementsData = [
+  {
+    id: 1,
+    title: 'Лучший молодой преподаватель ДГУ – 2023',
+    order: '/files/young-teacher-2023-order.pdf',
+    regulation: '/files/young-teacher-2023-regulation.pdf',
+    participants: '/files/young-teacher-2023-participants.pdf',
+    results: '/files/young-teacher-2023-results.pdf',
+  },
+  {
+    id: 2,
+    title: 'Конкурс научных проектов среди студентов – 2024',
+    order: '/files/student-projects-2024-order.pdf',
+    regulation: '/files/student-projects-2024-regulation.pdf',
+    participants: '/files/student-projects-2024-participants.pdf',
+    results: '/files/student-projects-2024-results.pdf',
+  },
+  {
+    id: 3,
+    title: 'Программа повышения квалификации для преподавателей вузов',
+    order: '/files/qualification-2025-order.pdf',
+    regulation: '/files/qualification-2025-regulation.pdf',
+    participants: '/files/qualification-2025-participants.pdf',
+    results: '/files/qualification-2025-results.pdf',
+  },
+  {
+    id: 4,
+    title: 'Олимпиада по программированию среди студентов',
+    order: '/files/olympiad-order.pdf',
+    regulation: '/files/olympiad-regulation.pdf',
+    participants: '/files/olympiad-participants.pdf',
+    results: '/files/olympiad-results.pdf',
+  },
+  {
+    id: 5,
+    title: 'Дополнительное объявление для проверки отображения',
+    order: '/files/test-order.pdf',
+    regulation: '/files/test-regulation.pdf',
+  },
+]

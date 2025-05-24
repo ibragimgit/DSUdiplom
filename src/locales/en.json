@@ -1,0 +1,17 @@
+{
+  "orgName": "Center for modern educational technologies",
+  "header": {
+    "about": "About",
+    "team": "Team",
+    "materials": "Materials",
+    "presentations": "Presentations",
+    "videos": "Video Materials",
+    "contacts": "Contacts"
+  },
+  "viseoCard": {
+    "video1": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Zulfia Omarova",
+    "video2": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Diana Emirova",
+    "video3": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Madina Magomedova",
+    "video4": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Magomed Magomedov"
+  }
+}

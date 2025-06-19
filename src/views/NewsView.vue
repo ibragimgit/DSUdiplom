@@ -1,27 +1,25 @@
 <template>
   <div class="news-container">
-    <!-- Панель поиска и фильтра -->
     <div class="search-filter-wrapper">
       <div class="search-center">
-        <div class="breadcrumbs-wrapper"></div>
         <div class="search-wrapper">
           <input
             v-model="searchQuery"
             type="text"
             class="search-input"
-            placeholder="Поиск"
+            :placeholder="$t('news.search')"
             @input="applyFilters"
           />
-          <button class="search-clear-button" @click="clearSearch">Очистить</button>
+          <button class="search-button" @click="clearSearch">{{ $t('news.clear') }}</button>
         </div>
         <div class="year-filter">
           <div class="custom-select" :class="{ active: isOpen }" @click="toggleDropdown">
             <span class="selected-option-wrapper">
-              <span class="selected-option">{{ selectedYear || 'Все' }}</span>
+              <span class="selected-option">{{ selectedYear || $t('news.all') }}</span>
             </span>
             <span class="arrow"></span>
             <div v-if="isOpen" class="options">
-              <div class="option" @click.stop="selectYear('')">Все</div>
+              <div class="option" @click.stop="selectYear('')">{{ $t('news.all') }}</div>
               <div
                 v-for="year in years"
                 :key="year"
@@ -36,21 +34,41 @@
       </div>
     </div>
 
-    <!-- Список новостей -->
-    <div v-if="isLoading" class="loading">Загрузка...</div>
-    <div v-else-if="paginatedNews.length === 0" class="no-news">Новости не найдены</div>
+    <div v-if="isLoading" class="loading">{{ $t('news.loading') }}</div>
+    <div v-else-if="!filteredNews || filteredNews.length === 0" class="no-news">
+      {{ $t('news.notFound') }}
+    </div>
     <div v-else class="news-list">
-      <div v-for="item in paginatedNews" :key="item.id" class="news-card">
-        <img :src="item.image" alt="image" class="news-image" />
+      <div v-for="(item, i) in paginatedNews" :key="i" class="news-card">
+        <template v-if="item.image">
+          <img 
+            :src="item.image" 
+            :alt="`${$t('news.newsPreview')} ${item.title}`" 
+            class="news-preview"
+          />
+        </template>
+        <template v-else>
+          <div class="news-preview-placeholder">
+            <span class="preview-number">{{ i + 1 + (currentPage.value - 1) * newsPerPage }}</span>
+          </div>
+        </template>
         <div class="news-content">
           <p class="news-date">{{ item.date }}</p>
           <p class="news-title">{{ item.title }}</p>
           <p class="news-description">{{ item.description }}</p>
+          <a 
+            v-if="item.textFile" 
+            :href="item.textFile" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="presentation-download-link"
+          >
+            {{ $t('news.readMore') }}
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- Пагинация -->
     <Pagination
       v-if="filteredNews.length > newsPerPage && !isLoading"
       class="pagination-wrapper"
@@ -62,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { newsItems } from '@/data/newsData'
 
@@ -74,96 +92,78 @@ const newsPerPage = 8
 const isLoading = ref(true)
 
 onMounted(() => {
-  try {
-    // Проверка уникальности ID
-    const ids = newsItems.map(item => item.id)
-    const uniqueIds = new Set(ids)
-    if (ids.length !== uniqueIds.size) {
-      console.warn('[News] Duplicate IDs found:', ids.filter((id, index) => ids.indexOf(id) !== index))
-    }
-    console.log('[News] Data loaded, items:', newsItems.length)
-  } catch (error) {
-    console.error('[News] Error in onMounted:', error)
-  } finally {
-    isLoading.value = false
-  }
-})
-
-const filteredNews = computed(() => {
-  if (isLoading.value) return []
-  let filtered = [...newsItems]
-  const query = searchQuery.value.trim().toLowerCase()
-  if (query) {
-    filtered = filtered.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query)
-    )
-  }
-  if (selectedYear.value) {
-    filtered = filtered.filter(item => item.date.endsWith(selectedYear.value))
-  }
-  console.log(`[FilteredNews] ${filtered.length} items`)
-  return filtered
+  isLoading.value = false
 })
 
 const years = computed(() => {
+  if (!Array.isArray(newsItems) || newsItems.length === 0) {
+    return []
+  }
   const allYears = newsItems.map(item => item.date.split('.').pop())
-  return [...new Set(allYears)].sort((a, b) => b - a)
+  return [...new Set(allYears)].sort((a, b) => parseInt(b, 10) - parseInt(a, 10))
+})
+
+const filteredNews = computed(() => {
+  if (!Array.isArray(newsItems)) {
+    console.error("Данные 'newsItems' не являются массивом.")
+    return []
+  }
+  let list = [...newsItems]
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) {
+    list = list.filter(item =>
+      (item.title && item.title.toLowerCase().includes(q)) || 
+      (item.description && item.description.toLowerCase().includes(q))
+    )
+  }
+  if (selectedYear.value) {
+    list = list.filter(item => item.date && item.date.endsWith(selectedYear.value))
+  }
+  return list
 })
 
 const totalPages = computed(() => {
-  const pages = Math.ceil(filteredNews.value.length / newsPerPage)
-  console.log(`[TotalPages] ${pages}`)
-  return pages
+  if (!filteredNews.value || filteredNews.value.length === 0) {
+    return 0
+  }
+  return Math.ceil(filteredNews.value.length / newsPerPage)
 })
 
 const paginatedNews = computed(() => {
-  if (isLoading.value) return []
+  if (!filteredNews.value || filteredNews.value.length === 0) {
+    return []
+  }
   const start = (currentPage.value - 1) * newsPerPage
-  const result = filteredNews.value.slice(start, start + newsPerPage)
-  console.log(`[PaginatedNews] Page ${currentPage.value}: ${result.length} items`, result.map(item => item.id))
-  return result
+  return filteredNews.value.slice(start, start + newsPerPage)
 })
 
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value
-}
-
-const selectYear = (year) => {
+const toggleDropdown = () => { isOpen.value = !isOpen.value }
+const selectYear = (year) => { 
   selectedYear.value = year
   isOpen.value = false
   currentPage.value = 1
-  console.log(`[YearSelect] Year: ${year || 'All'}, page reset to 1`)
 }
-
-const clearSearch = () => {
+const clearSearch = () => { 
   searchQuery.value = ''
-  selectedYear.value = ''
   currentPage.value = 1
-  console.log('[ClearSearch] Search cleared, page reset to 1')
 }
-
-const applyFilters = () => {
+const applyFilters = () => { 
   currentPage.value = 1
-  console.log('[ApplyFilters] Filters applied, page reset to 1')
+}
+const handlePageChange = (page) => { 
+  currentPage.value = page
 }
 
-const handlePageChange = (page) => {
-  if (page > 0 && page <= totalPages.value) {
-    currentPage.value = page
-    console.log(`[PageChange] Changed to page ${page}, total pages: ${totalPages.value}`)
-  } else {
+watch(filteredNews, () => {
+  if (totalPages.value > 0 && currentPage.value > totalPages.value) {
+    currentPage.value = totalPages.value
+  } else if (totalPages.value === 0) {
     currentPage.value = 1
-    console.log(`[PageChange] Invalid page ${page}, reset to 1`)
   }
-}
+}, { immediate: true })
 
-watch(filteredNews, (newValue) => {
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = 1
-    console.log('[WatchFilteredNews] Page reset to 1 due to filter change')
-  }
-  console.log(`[WatchFilteredNews] Filtered news updated: ${newValue.length} items`)
+watch(selectedYear, () => {
+  applyFilters()
 })
 </script>
 
@@ -185,29 +185,22 @@ watch(filteredNews, (newValue) => {
 
 .search-center {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   flex-wrap: wrap;
   gap: 16px;
 }
 
-.breadcrumbs-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-}
-
 .search-wrapper {
-  flex-grow: 2;
   display: flex;
   gap: 12px;
-  justify-content: center;
   align-items: center;
 }
 
 .search-input {
-  width: 50%;
+  width: 700px;
+  max-width: 90%;
   padding: 10px 16px;
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
@@ -223,7 +216,7 @@ watch(filteredNews, (newValue) => {
   border-color: #2a3b5c;
 }
 
-.search-clear-button {
+.search-button {
   padding: 10px 20px;
   background-color: #2a3b5c;
   color: #ffffff;
@@ -236,15 +229,15 @@ watch(filteredNews, (newValue) => {
   transition: background-color 0.3s ease;
 }
 
-.search-clear-button:hover {
+.search-button:hover {
   background-color: #1f2c40;
 }
 
-/* Year filter dropdown */
 .year-filter {
   min-width: 160px;
   display: flex;
   justify-content: flex-end;
+  margin-left: 100px;
 }
 
 .custom-select {
@@ -307,47 +300,57 @@ watch(filteredNews, (newValue) => {
   background-color: #f1f5f9;
 }
 
-/* Новости */
 .news-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
 }
 
 .news-card {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  border-radius: 6px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .news-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.news-image {
+.news-preview {
   width: 100%;
-  height: 180px;
+  height: 160px;
   object-fit: cover;
-  object-position: center;
   border-radius: 6px;
-  margin-bottom: 16px;
-  transition: transform 0.4s ease;
+  margin-bottom: 12px;
 }
 
-.news-image:hover {
-  transform: scale(1.05);
+.news-preview-placeholder {
+  width: 100%;
+  height: 160px;
+  background-color: #2a3b5c;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-number {
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: 600;
 }
 
 .news-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  flex-grow: 1;
 }
 
 .news-date {
@@ -356,11 +359,10 @@ watch(filteredNews, (newValue) => {
 }
 
 .news-title {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
   color: #1f2937;
-  font-family: 'Montserrat', sans-serif;
-  text-transform: uppercase;
+  line-height: 1.4;
 }
 
 .news-description {
@@ -368,12 +370,33 @@ watch(filteredNews, (newValue) => {
   color: #4b5563;
   line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex-grow: 1;
+  margin-bottom: 12px;
 }
 
-/* Пагинация */
+.presentation-download-link {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #2a3b5c;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+  margin-top: auto;
+  text-align: center;
+}
+
+.presentation-download-link:hover {
+  background-color: #1f2c40;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: center;
@@ -381,33 +404,66 @@ watch(filteredNews, (newValue) => {
   padding: 30px 0 0;
 }
 
-.loading,
-.no-news {
+.loading, .no-news {
   text-align: center;
-  font-size: 16px;
-  color: #4b5563;
   padding: 20px;
+  color: #666;
 }
 
-@media (max-width: 768px) {
-  .news-container {
-    padding: 40px 20px;
-  }
+.no-news {
+  font-size: 16px;
+  padding: 40px 20px;
+}
 
+@media (max-width: 640px) {
+  .news-container {
+    padding: 0 2vw;
+  }
+  .search-center {
+    flex-direction: column;
+    gap: 1.25rem;
+    justify-content: center;
+  }
+  .search-wrapper {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
   .search-input {
     width: 100%;
   }
-
-  .news-title {
-    font-size: 16px;
+  .search-button {
+    width: 100%;
+    max-width: 18.75rem;
   }
-
-  .news-description {
-    font-size: 13px;
+  .year-filter {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0px;
   }
+  .news-list {
+    grid-template-columns: 1fr;
+  }
+}
 
-  .news-image {
-    height: 150px;
+@media (min-width: 641px) and (max-width: 1023px) {
+  .news-container {
+    padding: 0 3vw;
+  }
+  .search-input {
+    width: 400px;
+  }
+  .news-list {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .search-input {
+    width: 600px;
+  }
+  .news-list {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   }
 }
 </style>

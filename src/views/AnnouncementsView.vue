@@ -2,16 +2,16 @@
   <div class="announcements-page">
     <div class="announcements-container">
       <div class="header-block">
-        <h2>Все объявления</h2>
+        <h2>{{ $t('announcements.title') }}</h2>
         <div class="underline"></div>
       </div>
       <div v-for="item in announcementsData" :key="item.id" class="announcement">
         <p class="announcement-title">{{ item.title }}</p>
         <div class="links">
-          <a v-if="item.order" :href="item.order" target="_blank">Приказ</a>
-          <a v-if="item.regulation" :href="item.regulation" target="_blank">Положение</a>
-          <a v-if="item.participants" :href="item.participants" target="_blank">Участники</a>
-          <a v-if="item.results" :href="item.results" target="_blank">Результаты</a>
+          <a v-if="item.order" :href="item.order" target="_blank">{{ $t('announcements.links.order') }}</a>
+          <a v-if="item.regulation" :href="item.regulation" target="_blank">{{ $t('announcements.links.regulation') }}</a>
+          <a v-if="item.participants" :href="item.participants" target="_blank">{{ $t('announcements.links.participants') }}</a>
+          <a v-if="item.results" :href="item.results" target="_blank">{{ $t('announcements.links.results') }}</a>
         </div>
       </div>
     </div>

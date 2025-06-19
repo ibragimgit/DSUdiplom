@@ -9,19 +9,19 @@
             v-model="searchQuery"
             type="text"
             class="search-input"
-            :placeholder="$t('Поиск')"
+            :placeholder="$t('video.search.placeholder')"
             @input="applyFilters"
           />
-          <button class="search-button" @click="clearSearch">{{ $t('Очистить') }}</button>
+          <button class="search-button" @click="clearSearch">{{ $t('video.search.clear') }}</button>
         </div>
         <div class="year-filter">
           <div class="custom-select" :class="{ active: isOpen }" @click="toggleDropdown">
             <span class="selected-option-wrapper">
-              <span class="selected-option">{{ selectedYear || $t('Все') }}</span>
+              <span class="selected-option">{{ selectedYear || $t('video.filter.all') }}</span>
             </span>
             <span class="arrow"></span>
             <div v-if="isOpen" class="options">
-              <div class="option" @click.stop="selectYear('')">{{ $t('Все') }}</div>
+              <div class="option" @click.stop="selectYear('')">{{ $t('video.filter.all') }}</div>
               <div v-for="year in years" :key="year" class="option" @click.stop="selectYear(year)">
                 {{ year }}
               </div>
@@ -32,9 +32,9 @@
     </div>
 
     <!-- Video List -->
-    <div v-if="isLoading" class="loading">{{ $t('Загрузка...') }}</div>
+    <div v-if="isLoading" class="loading">{{ $t('video.loading') }}</div>
     <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else-if="paginatedVideos.length === 0" class="no-data">{{ $t('Нет данных') }}</div>
+    <div v-else-if="paginatedVideos.length === 0" class="no-data">{{ $t('video.noData') }}</div>
     <div v-else class="video-list">
       <VideoCard
         v-for="(video, index) in paginatedVideos"
@@ -167,10 +167,13 @@ const handlePageChange = (page) => {
 
 .video-container {
   padding: 20px 100px;
+  margin: 0 auto;
+  background: #fff;
   color: #000;
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Поиск + фильтр обертка */
 .search-filter-wrapper {
   display: flex;
   align-items: center;
@@ -183,51 +186,59 @@ const handlePageChange = (page) => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.breadcrumbs-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-}
-
+/* Поиск */
 .search-wrapper {
-  flex-grow: 2;
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  gap: 12px;
+  align-items: center;
+  margin-left: auto; /* толкает к фильтру */
 }
 
 .search-input {
-  width: 50%;
-  padding: 8px 12px;
+  width: 735px; /* уменьшенная ширина */
+  max-width: 100%;
+  padding: 10px 16px;
   font-size: 14px;
-  font-weight: 500;
-  border: 1px solid #E0E0E0;
-  border-radius: 5px;
-  background-color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #1f2937;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2a3b5c;
 }
 
 .search-button {
-  padding: 8px 15px;
+  padding: 10px 20px;
+  background-color: #2a3b5c;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  font-weight: 500;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background: none;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
-  background: #000;
-  color: #fff;
+  background-color: #1f2c40;
 }
 
+/* Фильтр по году */
 .year-filter {
-  min-width: 150px;
+  min-width: 160px;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  margin-left: 100px;
 }
 
 .custom-select {
@@ -235,31 +246,27 @@ const handlePageChange = (page) => {
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  background-color: #fff;
+  background-color: #ffffff;
+  border-radius: 6px;
   cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  color: #1f2937;
 }
 
 .selected-option-wrapper {
-  display: inline-block;
-  border-bottom: 1px solid #000;
-  margin-right: 10px;
-}
-
-.selected-option {
-  font-size: 16px;
+  margin-right: 8px;
+  font-size: 14px;
   font-weight: 500;
-  color: #000;
+  border-bottom: 1px solid #2a3b5c;
 }
 
 .arrow {
   width: 6px;
   height: 6px;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-right: 1px solid #2a3b5c;
+  border-bottom: 1px solid #2a3b5c;
   transform: rotate(45deg);
   transition: transform 0.3s ease;
-  position: relative;
-  top: -1px;
 }
 
 .custom-select.active .arrow {
@@ -271,30 +278,30 @@ const handlePageChange = (page) => {
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #fff;
-  margin-top: 2px;
+  background-color: #ffffff;
+  margin-top: 4px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  z-index: 10;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 10;
 }
 
 .option {
-  padding: 8px 15px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #000;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  color: #1f2937;
   cursor: pointer;
-  border-bottom: 1px solid #E0E0E0;
-}
-
-.option:last-child {
-  border-bottom: none;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s ease;
 }
 
 .option:hover {
-  background-color: #f5f5f5;
+  background-color: #f1f5f9;
 }
 
+/* Прочее */
 .video-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -314,4 +321,58 @@ const handlePageChange = (page) => {
   color: #d32f2f;
 }
 
+@media (max-width: 640px) {
+  .video-container {
+    padding: 0 2vw;
+  }
+
+  .search-center {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .search-wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%;
+    max-width: 18.75rem;
+  }
+
+  .year-filter {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0px;
+  }
+
+  .video-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .video-container {
+    padding: 0 3vw;
+  }
+
+  .video-list {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+
+  .search-wrapper {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .video-list {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
+}
 </style>

@@ -2,8 +2,10 @@
   <section class="announcements-section">
     <div class="container">
       <div class="header-container">
-        <h1>Объявления</h1>
-        <RouterLink to="/announcements" class="show-all-button">Все объявления</RouterLink>
+        <h1>{{ $t('announcement.title') }}</h1>
+        <RouterLink to="/announcements" class="show-all-button">
+          {{ $t('announcement.all') }}
+        </RouterLink>
       </div>
 
       <transition-group name="fade" tag="div">
@@ -16,20 +18,29 @@
             <h2>{{ item.title }}</h2>
             <span>{{ expanded[index] ? '▲' : '▼' }}</span>
           </div>
+
           <transition name="collapse">
             <div class="card-body" v-show="expanded[index]">
               <ul>
                 <li v-if="item.order">
-                  <a :href="item.order" target="_blank">📄 Приказ о конкурсе</a>
+                  <a :href="item.order" target="_blank">
+                    📄 {{ $t('announcement.order') }}
+                  </a>
                 </li>
                 <li v-if="item.regulation">
-                  <a :href="item.regulation" target="_blank">📘 Положение</a>
+                  <a :href="item.regulation" target="_blank">
+                    📘 {{ $t('announcement.regulation') }}
+                  </a>
                 </li>
                 <li v-if="item.participants">
-                  <a :href="item.participants" target="_blank">👥 Участники</a>
+                  <a :href="item.participants" target="_blank">
+                    👥 {{ $t('announcement.participants') }}
+                  </a>
                 </li>
                 <li v-if="item.results">
-                  <a :href="item.results" target="_blank">🏆 Итоги</a>
+                  <a :href="item.results" target="_blank">
+                    🏆 {{ $t('announcement.results') }}
+                  </a>
                 </li>
               </ul>
             </div>

@@ -3,7 +3,7 @@
   "header": {
     "about": "About",
     "team": "Team",
-    "materials": "Materials",
+    "materials": "Calendar",
     "presentations": "Presentations",
     "videos": "Video Materials",
     "contacts": "Contacts"
@@ -13,5 +13,218 @@
     "video2": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Diana Emirova",
     "video3": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Madina Magomedova",
     "video4": "Master Class as part of the competition \"Best Teacher of DGU 2024\"\nby Magomed Magomedov"
+  },
+  "hero": {
+    "titleLine1": "CENTER FOR MODERN",
+    "titleLine2": "EDUCATIONAL",
+    "titleLine3": "TECHNOLOGIES",
+    "subtitle": "Named after S.M. Omarov"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "The Center for Modern Educational Technologies at Dagestan State University named after S.M. Omarov (CMET DSU) is the engine of innovation in the education system of DSU. We develop and implement advanced technological solutions, improving the learning experience of students and expanding the methodological capabilities of teachers. Our goal is to build a modern, technology-driven, and effective educational environment."
+  },
+  "chat": {
+    "header": "Support Chat",
+    "bot": "Bot",
+    "you": "You",
+    "inputPlaceholder": "Type a message..."
+  },
+  "announcement": {
+    "title": "Announcements",
+    "all": "All Announcements",
+    "order": "Competition Order",
+    "regulation": "Regulations",
+    "participants": "Participants",
+    "results": "Results"
+  },
+  "new": {
+    "title": "News",
+    "all": "All News"
+  },
+  "directions": {
+    "header": "Key Areas of Work",
+    "more": "Read more",
+    "hide": "Hide",
+    "alt": {
+      "innovative": "Innovative Technologies Icon",
+      "pedagogical": "Pedagogical Support Icon",
+      "interactive": "Interactive Technologies Icon",
+      "digital": "Digital Education Icon"
+    },
+    "items": {
+      "innovative": {
+        "title": "Innovative Technologies",
+        "short": "Searching and implementing new solutions.",
+        "full": "Integrate cutting-edge technologies in a flexible way to support learning in all formats."
+      },
+      "pedagogical": {
+        "title": "Pedagogical Initiatives",
+        "short": "Support for innovative ideas.",
+        "full": "Encourage the development of advanced educational ideas by integrating them into practice."
+      },
+      "interactive": {
+        "title": "Interactive Technologies",
+        "short": "Popularizing new methods.",
+        "full": "Support the integration of modern technologies in the educational process."
+      },
+      "digital": {
+        "title": "Digitalization of Education",
+        "short": "Creating online courses.",
+        "full": "Helping instructors create online courses and bridge the digital divide."
+      }
+    }
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "videomaterials": "Video Materials",
+    "team": "Team",
+    "calendar": "Calendar",
+    "presentations": "Presentations",
+    "contacts": "Contacts",
+    "news": "News",
+    "announcements": "Announcements"
+  },
+  "footer": {
+    "orgName": "LLC “Organization Name”",
+    "address": "Makhachkala, Dzerzhinsky St. 12 Lab building, office 412",
+    "copyright": "© Your Organization Name 2025",
+    "about": "About Us",
+    "aboutCompany": "About Us",
+    "contacts": "Contacts",
+    "connect": "Connect"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "phone": "+7 928 777-77-77",
+    "email": "E-mail: mahakala@ngaz.ru",
+    "address": "Address: Makhachkala, Dzerzhinskogo St., 12<br />Laboratory Building, Room 412.",
+    "map_balloon": "Makhachkala, Dzerzhinskogo St., 12"
+  },
+  "present": {
+    "searchPlaceholder": "Search",
+    "clear": "Clear",
+    "all": "All",
+    "loading": "Loading...",
+    "noPresentationsFound": "No presentations found",
+    "presentationPreview": "Presentation preview",
+    "download": "download"
+  },
+  "team": {
+      "title": "Our Team"
+    },
+    "loading": "Loading...",
+    "noData": "No data matching the expected format",
+    "errors": {
+      "invalidData": "Data is invalid or missing",
+      "loadError": "Failed to load data. Please check your server connection."
+    },
+    "aria": {
+      "previousEmployee": "Previous employee",
+      "nextEmployee": "Next employee"
+    },
+    "video": {
+      "search": {
+        "placeholder": "Search",
+        "clear": "Clear"
+      },
+      "filter": {
+        "all": "All"
+      },
+      "loading": "Loading...",
+      "noData": "No data"
+    },
+    "calendar": {
+      "days": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "form": {
+        "image": "Image:",
+        "title": "Title:",
+        "date": "Date:",
+        "time": "Time:",
+        "duration": "Duration:",
+        "hours": "h",
+        "description": "Description:",
+        "delete": "Delete",
+        "done": "Done"
+      },
+      "events": { "title": "List of events", "noEvents": "There are no events for the selected dates" }
+    },
+    "announcements": {
+    "title": "All Announcements",
+    "links": {
+      "order": "Order",
+      "regulation": "Regulation",
+      "participants": "Participants",
+      "results": "Results"
+    }
+  },
+  "news": {
+    "search": "Search",
+    "clear": "Clear",
+    "all": "All",
+    "loading": "Loading...",
+    "notFound": "No news found",
+    "readMore": "Read More"
+  },
+  "chrono": {
+    "title": "Chronology of the DSU Center",
+    "text": "This timeline reflects the key stages of development of the Dagestan State University Center, summarizing its achievements and prospects."
+  },
+  "timeline": {
+    "event1960": "Text about the 1960 event. Foundation and first steps.",
+    "event1975": "Text about the 1975 event. Expansion and new technologies.",
+    "event1990": "Text about the 1990 event. Entering the international market.",
+    "event2005": "Text about the 2005 event. Major projects and achievements.",
+    "event2010": "Text about the 2010 event. Digital transformation.",
+    "event2015": "Text about the 2015 event. Innovation and development.",
+    "event2020": "Text about the 2020 event. Responding to global challenges.",
+    "event2025": "Text about the 2025 event. Future plans."
+  },
+  "partners": {
+    "rosobrnadzor": "FEDERAL SERVICE FOR SUPERVISION IN EDUCATION AND SCIENCE",
+    "minobrnauki": "MINISTRY OF SCIENCE AND HIGHER EDUCATION OF THE RUSSIAN FEDERATION",
+    "vak": "HIGHER ATTESTATION COMMISSION",
+    "nacic": "NATIONAL CENTER FOR COUNTERING<br/>TERRORISM AND EXTREMISM",
+    "minpros": "MINISTRY OF EDUCATION OF THE RUSSIAN FEDERATION"
+  },
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "subtitle": "Sorry, the page you are looking for does not exist.",
+    "backToHome": "Back to Home"
+  },
+  "error": {
+    "403": {
+      "title": "403 - Forbidden",
+      "subtitle": "You do not have permission to access this page."
+    },
+    "500": {
+      "title": "500 - Internal Server Error",
+      "subtitle": "Something went wrong on the server. Please try again later."
+    },
+    "502": {
+      "title": "502 - Bad Gateway",
+      "subtitle": "The server received an invalid response. Try refreshing the page."
+    },
+    "503": {
+      "title": "503 - Service Unavailable",
+      "subtitle": "The server is temporarily unavailable due to maintenance."
+    },
+    "504": {
+      "title": "504 - Gateway Timeout",
+      "subtitle": "The server did not respond in time. Please try again later."
+    },
+    "509": {
+      "title": "509 - Bandwidth Limit Exceeded",
+      "subtitle": "The server has exceeded its bandwidth limit. Try again later."
+    },
+    "backToHome": "Back to Home"
   }
 }

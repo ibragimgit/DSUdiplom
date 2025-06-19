@@ -2,8 +2,7 @@
   <section class="directions-section">
     <div class="directions-container">
       <div class="header-block">
-        <h1>Основные направления работы</h1>
-        <hr class="divider" />
+        <h1>{{ $t('directions.header') }}</h1>
       </div>
       <div class="directions-grid">
         <div
@@ -12,16 +11,16 @@
           class="direction-card"
         >
           <div class="card-image">
-            <img :src="item.img" :alt="item.alt" />
+            <img :src="item.img" :alt="$t(item.alt)" />
           </div>
           <div class="card-text">
-            <h2>{{ item.title }}</h2>
-            <p class="short-text">{{ item.short }}</p>
+            <h2>{{ $t(item.title) }}</h2>
+            <p class="short-text">{{ $t(item.short) }}</p>
             <p class="full-text" v-show="expanded[index]">
-              {{ item.full }}
+              {{ $t(item.full) }}
             </p>
             <button class="toggle-button" @click="toggleExpand(index)">
-              {{ expanded[index] ? 'Скрыть' : 'Подробнее' }}
+              {{ expanded[index] ? $t('directions.hide') : $t('directions.more') }}
             </button>
           </div>
         </div>
@@ -31,48 +30,44 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-const expanded = ref([false, false, false, false]);
+const expanded = ref([false, false, false, false])
 
 const toggleExpand = (index) => {
-  expanded.value[index] = !expanded.value[index];
-};
+  expanded.value[index] = !expanded.value[index]
+}
 
 const directions = [
   {
-    img: '/src/assets/img1.jpg',
-    alt: 'Innovative Technologies Icon',
-    title: 'Инновационные технологии',
-    short: 'Поиск и внедрение новых решений.',
-    full:
-      'Интегрируйте передовые технологии в удобном и гибком формате, чтобы эффективно поддерживать обучение в любой форме.',
+    img: '/src/assets/img1.jpeg',
+    alt: 'directions.alt.innovative',
+    title: 'directions.items.innovative.title',
+    short: 'directions.items.innovative.short',
+    full: 'directions.items.innovative.full',
   },
   {
-    img: '/src/assets/img2.jpg',
-    alt: 'Pedagogical Support Icon',
-    title: 'Педагогические инициативы',
-    short: 'Поддержка инновационных идей.',
-    full:
-      'Способствуйте развитию передовых образовательных идей, интегрируя их в практическую деятельность.',
+    img: '/src/assets/img2.jpeg',
+    alt: 'directions.alt.pedagogical',
+    title: 'directions.items.pedagogical.title',
+    short: 'directions.items.pedagogical.short',
+    full: 'directions.items.pedagogical.full',
   },
   {
     img: '/src/assets/img3.jpg',
-    alt: 'Interactive Technologies Icon',
-    title: 'Интерактивные технологии',
-    short: 'Популяризация новых методов.',
-    full:
-      'Поддерживайте внедрение современных технологий в образовательный процесс.',
+    alt: 'directions.alt.interactive',
+    title: 'directions.items.interactive.title',
+    short: 'directions.items.interactive.short',
+    full: 'directions.items.interactive.full',
   },
   {
-    img: '/src/assets/img3.jpg',
-    alt: 'Digital Education Icon',
-    title: 'Цифровизация образования',
-    short: 'Создание онлайн-курсов.',
-    full:
-      'Помощь преподавателям в создании онлайн-курсов и преодолении «цифровой пропасти».',
+    img: '/src/assets/img4.jpg',
+    alt: 'directions.alt.digital',
+    title: 'directions.items.digital.title',
+    short: 'directions.items.digital.short',
+    full: 'directions.items.digital.full',
   },
-];
+]
 </script>
 
 <style scoped>
@@ -126,16 +121,9 @@ const directions = [
   font-family: 'Montserrat', sans-serif;
   color: #2a3b5c;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.divider {
-  border: 0;
-  border-top: 2px solid #000;
-  width: 80px;
-  margin: 0 auto;
-  z-index: 2; /* Подчеркивание выше карточек */
-}
 
 @media (prefers-color-scheme: dark) {
   .divider {
@@ -221,7 +209,7 @@ const directions = [
   font-weight: 500;
   border-radius: 6px;
   font-family: 'Inter', sans-serif;
-  color: var(--btn-color);
+  color: #1f2937;
   transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
   opacity: 0;
   visibility: hidden;
@@ -263,7 +251,10 @@ const directions = [
   }
 
   .card-image {
+    width: 150px;
     height: 150px;
   }
 }
+
+
 </style>

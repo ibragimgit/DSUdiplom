@@ -8,6 +8,7 @@
       </main>
     </FooterComponents>
   </div>
+  <Chat/>
 </template>
 
 <script setup>
@@ -15,6 +16,7 @@ import HeaderComponent from './components/HeaderComponent.vue'
 import Breadcrumbs from './components/Breadcrumbs.vue'
 import FooterComponents from './components/FooterComponents.vue'
 import { useRoute } from 'vue-router' // Импортируем useRoute для доступа к текущему маршруту
+import Chat from './components/Chat.vue';
 
 const $route = useRoute() // Получаем текущий маршрут
 </script>

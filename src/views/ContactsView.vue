@@ -2,31 +2,40 @@
   <div class="contacts-page">
     <div class="contacts-container">
       <div class="info-block">
-        <h1>Контакты</h1>
+        <h1>{{ $t('contacts.title') }}</h1>
         <hr class="divider" />
         <div class="info-item">
-          <p class="phone">+7 928 777-77-77</p>
+          <p class="phone">{{ $t('contacts.phone') }}</p>
         </div>
-
         <div class="info-item">
-          <p class="mail">E-mail: mahakala@ngaz.ru</p>
+          <p class="mail">{{ $t('contacts.email') }}</p>
         </div>
-
         <div class="info-item">
-          <p class="region">Адрес: г. Махачкала, ул. Дзержинского,12<br />
-                Лабораторный корпус, кабинет 412.</p>
+          <p class="region" v-html="$t('contacts.address')"></p>
         </div>
         <div class="info-item">
           <div class="socials">
             <div class="socials-icons">
               <a href="https://vk.com" target="_blank" aria-label="VK">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/vk.svg" alt="VK" class="social-icon" />
-              </a>
-              <a href="https://t.me" target="_blank" aria-label="Telegram">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" class="social-icon" />
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/vk.svg"
+                  alt="VK"
+                  class="social-icon"
+                />
               </a>
               <a href="https://rutube.ru" target="_blank" aria-label="Rutube">
-                <img src="data:image/png;base64,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" alt="Rutube" class="social-icon" />
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
+                  alt="Rutube"
+                  class="social-icon"
+                />
+              </a>
+              <a href="https://t.me" target="_blank" aria-label="Telegram">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
+                  alt="Telegram"
+                  class="social-icon"
+                />
               </a>
             </div>
           </div>
@@ -41,6 +50,10 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// Access i18n instance
+const { t } = useI18n();
 
 // Переменная для хранения карты
 let myMap = null;
@@ -77,7 +90,7 @@ function initMap() {
     const placemark = new ymaps.Placemark(
       [42.9785, 47.4995],
       {
-        balloonContent: 'г. Махачкала, ул. Дзержинского, 12',
+        balloonContent: t('contacts.map_balloon'), // Use translated content
       },
       {
         preset: 'islands#blueDotIcon',
@@ -169,19 +182,18 @@ onUnmounted(() => {
 }
 
 h1 {
-  font-size: 32px;
-  font-weight: 400;
-  color: #000;
+ font-size: 32px;
+  font-weight: 800;
   font-family: 'Montserrat', sans-serif;
-  margin-bottom: 20px;
-  line-height: 1.2;
+  color: #2a3b5c;
   text-transform: uppercase;
+  margin: 0 0 20px 0;
 }
 
 .phone {
   font-size: 22px;
   font-weight: 400;
-  color: #000;
+  color: #6b7280;
   font-family: 'Inter', sans-serif;
   line-height: 1.2;
   text-transform: uppercase;
@@ -191,7 +203,7 @@ h1 {
 .mail {
   font-size: 16px;
   font-weight: 400;
-  color: #000;
+  color: #6b7280;
   font-family: 'Inter', sans-serif;
   line-height: 1.2;
 }
@@ -237,8 +249,8 @@ h1 {
 .socials-title {
   font-size: 16px;
   font-weight: 600;
-  color: #000;
-  font-family: 'Arial', sans-serif;
+  color: #2a3b5c;
+  font-family: 'Inter', sans-serif;
   margin: 0;
 }
 
@@ -248,9 +260,9 @@ h1 {
 }
 
 .social-icon {
-  width: 28 renderex;
+  width: 28px;
   height: 28px;
-  filter: grayscale(100%);
+  filter: brightness(0) saturate(100%) invert(19%) sepia(18%) saturate(647%) hue-rotate(171deg) brightness(92%) contrast(90%);
   transition: opacity 0.3s ease;
   display: block;
 }
@@ -262,4 +274,79 @@ h1 {
 .social-icon[src*="rutube"] {
   background-color: #f0f0f0;
 }
+
+@media (max-width: 576px) {
+  .contacts-page {
+    margin-top: 40px;
+    padding: 0 10px;
+  }
+
+  .contacts-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .phone {
+    font-size: 16px;
+  }
+
+  .region,
+  .mail {
+    font-size: 12px;
+  }
+
+  .info-item {
+    margin-bottom: 16px;
+  }
+
+  .map-container {
+    height: 200px;
+    min-height: 150px;
+  }
+
+  .socials-icons {
+    gap: 8px;
+  }
+
+  .social-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 991px) {
+  .contacts-container {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .map-container {
+    height: 250px;
+    min-height: 200px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .phone {
+    font-size: 17px;
+  }
+
+  .region,
+  .mail {
+    font-size: 14px;
+  }
+
+  .social-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
 </style>
+

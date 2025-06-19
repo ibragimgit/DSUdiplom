@@ -2,8 +2,10 @@
   <div class="news-container">
     <div class="header-line-wrapper">
       <div class="news-header">
-        <h2>Новости</h2>
-        <RouterLink to="/news" class="all-news-button">Все новости</RouterLink>
+        <h2>{{ $t('new.title') }}</h2>
+        <RouterLink to="/news" class="all-news-button">
+          {{ $t('new.all') }}
+        </RouterLink>
       </div>
     </div>
 

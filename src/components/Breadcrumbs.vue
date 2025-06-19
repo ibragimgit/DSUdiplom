@@ -1,52 +1,50 @@
 <template>
-    <div class="breadcrumb">
-      <router-link to="/" class="breadcrumb-link">Главная</router-link>
-      <span v-if="segments.length > 0"> / </span>
-      <span v-for="(segment, index) in segments" :key="index">
-        <router-link v-if="index !== segments.length - 1" :to="'/' + segment" class="breadcrumb-link">
-          {{ getBreadcrumbLabel(segment) }}
-        </router-link>
-        <span v-else>{{ getBreadcrumbLabel(segment) }}</span>
-        <span v-if="index !== segments.length - 1"> / </span>
-      </span>
-    </div>
-  </template>
-  
-  <script setup>
-  import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
-  
-  const route = useRoute()
-  
-  // Словарь для хлебных крошек
-  const breadcrumbLabels = {
-    '': 'Главная',
-    'videomaterials': 'Видеоматериалы',
-    'team': 'Команда',
-    'materials': 'Материалы',
-    'presentations': 'Презентации',
-    'contacts': 'Контакты'
-  }
-  
-  // Получаем сегменты пути и убираем пустые элементы
-  const segments = computed(() => {
-    const path = route.path.split('/').filter(Boolean)
-    return path
-  })
-  
-  // Функция для получения метки хлебных крошек по сегменту
-  const getBreadcrumbLabel = (segment) => {
-    return breadcrumbLabels[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
-  }
-  </script>
+  <div class="breadcrumb">
+    <router-link to="/" class="breadcrumb-link">{{ $t('breadcrumbs.home') }}</router-link>
+    <span v-if="segments.length > 0"> / </span>
+    <span v-for="(segment, index) in segments" :key="index">
+      <router-link
+        v-if="index !== segments.length - 1"
+        :to="'/' + segment"
+        class="breadcrumb-link"
+      >
+        {{ getBreadcrumbLabel(segment) }}
+      </router-link>
+      <span v-else>{{ getBreadcrumbLabel(segment) }}</span>
+      <span v-if="index !== segments.length - 1"> / </span>
+    </span>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const route = useRoute()
+const { t } = useI18n()
+
+const segments = computed(() => {
+  const path = route.path.split('/').filter(Boolean)
+  return path
+})
+
+const getBreadcrumbLabel = (segment) => {
+  const translationKey = `breadcrumbs.${segment}`
+  const translation = t(translationKey)
+  return translation !== translationKey
+    ? translation
+    : segment.charAt(0).toUpperCase() + segment.slice(1)
+}
+</script>
   
   <style scoped>
-  /* Стили для хлебных крошек */
+
   .breadcrumb {
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #000; /* Цвет текста */
+    color: #000; 
     gap: 5px; 
     font-family: 'Inter', sans-serif;
     padding: 20px 100px;
@@ -86,6 +84,21 @@
     opacity: 1; /* Показываем подчеркивание при наведении */
   }
 
+@media (max-width: 640px) {
+  .breadcrumb {
+    font-size: 12px;
+    gap: 3px;
+    padding: 1rem 4vw;
+  }
+}
 
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .breadcrumb {
+    font-size: 13px;
+    gap: 4px;
+    padding: 1rem 6vw;
+  }
+}
   </style>
   

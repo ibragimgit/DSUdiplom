@@ -1,13 +1,8 @@
 <template>
   <section class="about-section" id="about-section">
     <div class="about-content">
-      <h1>О нас</h1>
-      <p>
-        ЦСОТ им. С.М. Омарова — современный центр образовательных технологий, нацеленный
-        на улучшение опыта обучения через инновационные инструменты и методики.
-        Мы создаём среду для студентов и преподавателей, где можно исследовать
-        передовые достижения в сфере EdTech.
-      </p>
+      <h1>{{ $t('about.title') }}</h1>
+      <p>{{ $t('about.description') }}</p>
     </div>
   </section>
 </template>
@@ -18,7 +13,7 @@
 
 <style scoped>
 .about-section {
-  padding: 80px 100px;
+  padding: 80px 500px;
   background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
   display: flex;
   align-items: center;

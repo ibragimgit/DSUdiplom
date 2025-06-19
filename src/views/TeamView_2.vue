@@ -15,7 +15,7 @@
           class="carousel-button prev-button"
           :aria-label="$t('aria.previousEmployee')"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -36,7 +36,7 @@
           class="carousel-button next-button"
           :aria-label="$t('aria.nextEmployee')"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -48,47 +48,56 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import axios from 'axios';
 
 // Access i18n instance
 const { t } = useI18n();
 
 // Component state
-const employees = ref([
-  {
-    name: 'Сайпулаев Арслан Алиевич',
-    position: 'Директор ЦСОТ',
-    image: 'https://ngazcom.ru/files/gallery/49/img_preview/protopopov-a-a_1709214544.jpg'
-  },
-  {
-    name: 'Магомедов Али Исламович',
-    position: 'Зам Директора',
-    image: 'https://ngazcom.ru/files/gallery/50/img_preview/vasyuhno-d-v_1709214745.jpg'
-  },
-  {
-    name: 'Алиев Арсен Ахмедович',
-    position: 'Дата Аналитик',
-    image: 'https://ngazcom.ru/files/gallery/62/img_preview/maliev-n-s_1709214910.jpg'
-  },
-  {
-    name: 'Магомедова Алина Юсуповна',
-    position: 'Дизайнер',
-    image: 'https://ngazcom.ru/files/gallery/51/img_preview/storozhenko-yu-v_1709277199.jpg'
-  },
-  {
-    name: 'Идрисов Камиль Шамильевич',
-    position: '1С Программист',
-    image: 'https://ngazcom.ru/files/gallery/63/img_preview/forzan-s-m_1709214956.jpg'
-  },
-  {
-    name: 'Алхасов Султан Магомедович',
-    position: 'Старший программист',
-    image: 'https://ngazcom.ru/files/gallery/85/img_preview/kovaldzhi-n-v_1709277507.jpg'
-  }
-]);
+const employees = ref([]);
 const isLoading = ref(false);
 const error = ref(null);
 const currentStartIndex = ref(0);
 const itemsPerPage = ref(4);
+
+// API URL
+const API_URL = 'http://192.168.1.100:5000/api/Employees';
+
+// Standardized API response handler
+const handleApiResponse = (response) => {
+  if (!response.data || !Array.isArray(response.data)) {
+    return { success: false, error: 'errors.invalidData' };
+  }
+  return { success: true, data: response.data };
+};
+
+// Fetch employees from API
+const fetchEmployees = async () => {
+  isLoading.value = true;
+  error.value = null;
+  try {
+    const response = await axios.get(API_URL);
+    const result = handleApiResponse(response);
+    if (result.success) {
+      employees.value = result.data.filter(
+        (employee) =>
+          typeof employee.name === 'string' &&
+          typeof employee.position === 'string' &&
+          typeof employee.image === 'string'
+      );
+      if (employees.value.length === 0) {
+        error.value = 'noData';
+      }
+    } else {
+      error.value = result.error;
+    }
+  } catch (err) {
+    error.value = 'errors.loadError';
+    console.error('Error fetching data:', err);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 // Update itemsPerPage based on window width
 const updateItemsPerPage = () => {
@@ -100,9 +109,9 @@ const updateItemsPerPage = () => {
   } else if (width < 1280) {
     itemsPerPage.value = 3; // Small desktop
   } else {
-    itemsPerPage.value = 5; // Large desktop - было 4, стало 5
+    itemsPerPage.value = 4; // Large desktop
   }
-
+  // Reset currentStartIndex if it exceeds valid range
   if (currentStartIndex.value + itemsPerPage.value > employees.value.length) {
     currentStartIndex.value = Math.max(0, employees.value.length - itemsPerPage.value);
   }
@@ -110,6 +119,7 @@ const updateItemsPerPage = () => {
 
 // Initialize and handle resize
 onMounted(() => {
+  fetchEmployees();
   updateItemsPerPage();
   window.addEventListener('resize', updateItemsPerPage);
 });
@@ -141,7 +151,7 @@ const next = () => {
 .carousel {
   padding: 0 4vw;
   margin-top: 5rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 .carousel-container {
@@ -178,13 +188,13 @@ const next = () => {
   justify-content: center;
   align-items: center;
   position: relative;
-  padding-top: 1rem;
+  padding-top: 1.25rem;
 }
 
 .carousel-items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Было 180px */
-  gap: 0.25rem; /* Было 0.5rem */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
   width: 100%;
   transition: opacity 0.2s ease-in-out;
 }
@@ -194,7 +204,7 @@ const next = () => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 220px;
+  max-width: 250px;
   margin: 0 auto;
 }
 
@@ -205,7 +215,7 @@ const next = () => {
   object-fit: cover;
   object-position: center;
   border-radius: 0.375rem;
-  max-width: 180px;
+  max-width: 200px;
 }
 
 .carousel-item h3 {
@@ -237,42 +247,39 @@ const next = () => {
 }
 
 .carousel-button {
-  border: 1px solid #2a3b5c;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  background-color: #2a3b5c;
-  backdrop-filter: blur(8px);
+  border: 1px solid #000;
+  padding: 0.625rem;
+  background: none;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  color: #fff;
-  transition: background 0.3s, color 0.3s, transform 0.2s;
+  border-radius: 0.3125rem;
+  transition: background 0.3s, color 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
-}
-
-.carousel-button:hover:not(:disabled) {
-  background: #1f2937;
 }
 
 .carousel-button.prev-button {
-  left: 0;
+  left: -2.5rem;
 }
 
 .carousel-button.next-button {
-  right: 0;
+  right: -2.5rem;
 }
 
 .carousel-button svg {
-  width: 16px;
-  height: 16px;
+  width: clamp(1rem, 3vw, 1.25rem);
+  height: clamp(1rem, 3vw, 1.25rem);
+}
+
+.carousel-button:hover:not(:disabled) {
+  background: #000;
+}
+
+.carousel-button:hover:not(:disabled) svg path {
+  stroke: #fff;
 }
 
 .carousel-button:disabled {
@@ -303,26 +310,19 @@ const next = () => {
   }
 
   .carousel-button {
-    width: 28px;
-    height: 28px;
-  }
-
-  .carousel-button svg {
-    width: 14px;
-    height: 14px;
+    padding: 0.5rem;
   }
 
   .carousel-button.prev-button {
-    left: 0.25rem;
+    left: 0.5rem;
   }
 
   .carousel-button.next-button {
-    right: 0.25rem;
+    right: 0.5rem;
   }
 
   .carousel-items {
     grid-template-columns: 1fr;
-    gap: 0.25rem;
   }
 
   .carousel-item {
@@ -330,45 +330,27 @@ const next = () => {
   }
 
   .carousel-item img {
-    max-width: 60vw;
+    max-width: 80vw;
   }
 }
 
 @media (min-width: 641px) and (max-width: 1023px) {
   .carousel-items {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
-
-  .carousel-item img {
-    max-width: 160px;
   }
 
   .carousel-button.prev-button {
-    left: 0.5rem;
+    left: -1.5rem;
   }
 
   .carousel-button.next-button {
-    right: 0.5rem;
+    right: -1.5rem;
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
   .carousel-items {
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-  }
-
-  .carousel-item img {
-    max-width: 170px;
-  }
-
-  .carousel-button.prev-button {
-    left: 0.5rem;
-  }
-
-  .carousel-button.next-button {
-    right: 0.5rem;
   }
 }
 </style>
